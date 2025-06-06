@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SERVICE="srv1cv8-8.3.25.1560@default.service"
+USER="usr1cv8"
+
 echo "IP Адреса системы:"
 ip a | grep -w inet | grep -v '127.0.0.1' | awk '{print $2}'
 
@@ -7,16 +10,19 @@ echo "Общий разход памяти на сервере"
 free -h
 echo ""
 
-echo "Статус лужбы 1С"
-systemctl status srv1cv8-8.3.25.1560@default.service --no-pager --lines=0
+echo "Статус службы 1С"
+if ! systemctl status $SERVICE --no-pager --lines=0; then
+    echo "Служба $SERVICE не найдена. Выход."
+    exit 1
+fi
 echo ""
 
-echo "Процессы пользователя usr1cv8:"
-ps -u usr1cv8 --sort=-%mem -o pid,%cpu,%mem,comm
+echo "Процессы пользователя $USER:"
+ps -u $USER --sort=-%mem -o pid,%cpu,%mem,comm
 echo
-pids=$(ps -u usr1cv8 -o pid=)
+pids=$(ps -u $USER -o pid=)
 if [[ -z "$pids" ]]; then
-    echo "Нет активных процессов для usr1cv8"
+    echo "Нет активных процессов для $USER"
     exit 0
 fi
 
