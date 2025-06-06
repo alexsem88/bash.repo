@@ -2,10 +2,10 @@
 
 SERVICE="srv1cv8-8.3.25.1560@default.service"
 USER="usr1cv8"
-echo ""
 
 echo "IP Адреса системы:"
 ip a | grep -w inet | grep -v '127.0.0.1' | awk '{print $2}'
+echo ""
 
 echo "Общий разход памяти на сервере"
 free -h
